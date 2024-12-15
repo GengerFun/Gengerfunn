@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.student.mapper.StuMajorMapper">
+
+    <resultMap type="StuMajor" id="StuMajorResult">
+        <result property="id"    column="id"    />
+        <result property="majorName"    column="major_name"    />
+        <result property="department"    column="department"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectStuMajorVo">
+        select id, major_name, department, del_flag, create_by, create_time, update_by, update_time, remark from stu_major
+    </sql>
+
+    <select id="selectStuMajorList" parameterType="StuMajor" resultMap="StuMajorResult">
+        <include refid="selectStuMajorVo"/>
+        <where>
+            <if test="majorName != null  and majorName != ''"> and major_name like concat('%', #{majorName}, '%')</if>
+            <if test="department != null  and department != ''"> and department = #{department}</if>
+        </where>
+    </select>
+
+    <select id="selectStuMajorById" parameterType="Long" resultMap="StuMajorResult">
+        <include refid="selectStuMajorVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertStuMajor" parameterType="StuMajor" useGeneratedKeys="true" keyProperty="id">
+        insert into stu_major
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="majorName != null">major_name,</if>
+            <if test="department != null">department,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="majorName != null">#{majorName},</if>
+            <if test="department != null">#{department},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateStuMajor" parameterType="StuMajor">
+        update stu_major
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="majorName != null">major_name = #{majorName},</if>
+            <if test="department != null">department = #{department},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteStuMajorById" parameterType="Long">
+        delete from stu_major where id = #{id}
+    </delete>
+
+    <delete id="deleteStuMajorByIds" parameterType="String">
+        delete from stu_major where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

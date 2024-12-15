@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.student.mapper.StuPaytypeMapper">
+
+    <resultMap type="StuPaytype" id="StuPaytypeResult">
+        <result property="id"    column="id"    />
+        <result property="amount"    column="amount"    />
+        <result property="payName"    column="pay_name"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectStuPaytypeVo">
+        select id, amount, pay_name, del_flag, create_by, create_time, update_by, update_time, remark from stu_paytype
+    </sql>
+
+    <select id="selectStuPaytypeList" parameterType="StuPaytype" resultMap="StuPaytypeResult">
+        <include refid="selectStuPaytypeVo"/>
+        <where>
+            <if test="amount != null "> and amount = #{amount}</if>
+            <if test="payName != null  and payName != ''"> and pay_name like concat('%', #{payName}, '%')</if>
+        </where>
+    </select>
+
+    <select id="selectStuPaytypeById" parameterType="Long" resultMap="StuPaytypeResult">
+        <include refid="selectStuPaytypeVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertStuPaytype" parameterType="StuPaytype" useGeneratedKeys="true" keyProperty="id">
+        insert into stu_paytype
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="amount != null">amount,</if>
+            <if test="payName != null">pay_name,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="amount != null">#{amount},</if>
+            <if test="payName != null">#{payName},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateStuPaytype" parameterType="StuPaytype">
+        update stu_paytype
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="payName != null">pay_name = #{payName},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteStuPaytypeById" parameterType="Long">
+        delete from stu_paytype where id = #{id}
+    </delete>
+
+    <delete id="deleteStuPaytypeByIds" parameterType="String">
+        delete from stu_paytype where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

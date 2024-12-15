@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.student.mapper.StuPaymentMapper">
+
+    <resultMap type="StuPayment" id="StuPaymentResult">
+        <result property="id"    column="id"    />
+        <result property="stuId"    column="stu_id"    />
+        <result property="amount"    column="amount"    />
+        <result property="payMethod"    column="pay_method"    />
+        <result property="payType"    column="pay_type"    />
+        <result property="status"    column="status"    />
+        <result property="transactionId"    column="transaction_id"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectStuPaymentVo">
+        select id, stu_id, amount, pay_method, pay_type, status, transaction_id, del_flag, create_by, create_time, update_by, update_time, remark from stu_payment
+    </sql>
+
+    <select id="selectStuPaymentList" parameterType="StuPayment" resultMap="StuPaymentResult">
+        <include refid="selectStuPaymentVo"/>
+        <where>
+            <if test="stuId != null "> and stu_id = #{stuId}</if>
+            <if test="amount != null "> and amount = #{amount}</if>
+            <if test="payMethod != null  and payMethod != ''"> and pay_method = #{payMethod}</if>
+            <if test="payType != null  and payType != ''"> and pay_type = #{payType}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="transactionId != null  and transactionId != ''"> and transaction_id = #{transactionId}</if>
+        </where>
+    </select>
+
+    <select id="selectStuPaymentById" parameterType="Long" resultMap="StuPaymentResult">
+        <include refid="selectStuPaymentVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertStuPayment" parameterType="StuPayment" useGeneratedKeys="true" keyProperty="id">
+        insert into stu_payment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="stuId != null">stu_id,</if>
+            <if test="amount != null">amount,</if>
+            <if test="payMethod != null">pay_method,</if>
+            <if test="payType != null">pay_type,</if>
+            <if test="status != null">status,</if>
+            <if test="transactionId != null">transaction_id,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="stuId != null">#{stuId},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="payMethod != null">#{payMethod},</if>
+            <if test="payType != null">#{payType},</if>
+            <if test="status != null">#{status},</if>
+            <if test="transactionId != null">#{transactionId},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateStuPayment" parameterType="StuPayment">
+        update stu_payment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="stuId != null">stu_id = #{stuId},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="payMethod != null">pay_method = #{payMethod},</if>
+            <if test="payType != null">pay_type = #{payType},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="transactionId != null">transaction_id = #{transactionId},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteStuPaymentById" parameterType="Long">
+        delete from stu_payment where id = #{id}
+    </delete>
+
+    <delete id="deleteStuPaymentByIds" parameterType="String">
+        delete from stu_payment where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

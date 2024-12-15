@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.student.mapper.StuMaterialMapper">
+
+    <resultMap type="StuMaterial" id="StuMaterialResult">
+        <result property="id"    column="id"    />
+        <result property="materialName"    column="material_name"    />
+        <result property="materialType"    column="material_type"    />
+        <result property="quantityCount"    column="quantity_count"    />
+        <result property="unitPrice"    column="unit_price"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectStuMaterialVo">
+        select id, material_name, material_type, quantity_count, unit_price, del_flag, create_by, create_time, update_by, update_time, remark from stu_material
+    </sql>
+
+    <select id="selectStuMaterialList" parameterType="StuMaterial" resultMap="StuMaterialResult">
+        <include refid="selectStuMaterialVo"/>
+        <where>
+            <if test="materialName != null  and materialName != ''"> and material_name like concat('%', #{materialName}, '%')</if>
+            <if test="materialType != null  and materialType != ''"> and material_type = #{materialType}</if>
+            <if test="quantityCount != null "> and quantity_count = #{quantityCount}</if>
+            <if test="unitPrice != null "> and unit_price = #{unitPrice}</if>
+        </where>
+    </select>
+
+    <select id="selectStuMaterialById" parameterType="Long" resultMap="StuMaterialResult">
+        <include refid="selectStuMaterialVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertStuMaterial" parameterType="StuMaterial" useGeneratedKeys="true" keyProperty="id">
+        insert into stu_material
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="materialName != null">material_name,</if>
+            <if test="materialType != null">material_type,</if>
+            <if test="quantityCount != null">quantity_count,</if>
+            <if test="unitPrice != null">unit_price,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="materialName != null">#{materialName},</if>
+            <if test="materialType != null">#{materialType},</if>
+            <if test="quantityCount != null">#{quantityCount},</if>
+            <if test="unitPrice != null">#{unitPrice},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateStuMaterial" parameterType="StuMaterial">
+        update stu_material
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="materialName != null">material_name = #{materialName},</if>
+            <if test="materialType != null">material_type = #{materialType},</if>
+            <if test="quantityCount != null">quantity_count = #{quantityCount},</if>
+            <if test="unitPrice != null">unit_price = #{unitPrice},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteStuMaterialById" parameterType="Long">
+        delete from stu_material where id = #{id}
+    </delete>
+
+    <delete id="deleteStuMaterialByIds" parameterType="String">
+        delete from stu_material where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.student.mapper.StuEnrollmentMapper">
+
+    <resultMap type="StuEnrollment" id="StuEnrollmentResult">
+        <result property="id"    column="id"    />
+        <result property="stuId"    column="stu_id"    />
+        <result property="expectedGraduationDate"    column="expected_graduation_date"    />
+        <result property="statusChangeDate"    column="status_change_date"    />
+        <result property="entryDate"    column="entry_date"    />
+        <result property="currentStatus"    column="current_status"    />
+        <result property="statusChangeReason"    column="status_change_reason"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectStuEnrollmentVo">
+        select id, stu_id, expected_graduation_date, status_change_date, entry_date, current_status, status_change_reason, del_flag, create_by, create_time, update_by, update_time from stu_enrollment
+    </sql>
+
+    <select id="selectStuEnrollmentList" parameterType="StuEnrollment" resultMap="StuEnrollmentResult">
+        <include refid="selectStuEnrollmentVo"/>
+        <where>
+            <if test="stuId != null "> and stu_id = #{stuId}</if>
+            <if test="expectedGraduationDate != null "> and expected_graduation_date = #{expectedGraduationDate}</if>
+            <if test="statusChangeDate != null "> and status_change_date = #{statusChangeDate}</if>
+            <if test="entryDate != null "> and entry_date = #{entryDate}</if>
+            <if test="currentStatus != null  and currentStatus != ''"> and current_status = #{currentStatus}</if>
+            <if test="statusChangeReason != null  and statusChangeReason != ''"> and status_change_reason = #{statusChangeReason}</if>
+        </where>
+    </select>
+
+    <select id="selectStuEnrollmentById" parameterType="Long" resultMap="StuEnrollmentResult">
+        <include refid="selectStuEnrollmentVo"/>
+        where stu_id = #{id}
+    </select>
+
+    <insert id="insertStuEnrollment" parameterType="StuEnrollment" useGeneratedKeys="true" keyProperty="id">
+        insert into stu_enrollment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="stuId != null">stu_id,</if>
+            <if test="expectedGraduationDate != null">expected_graduation_date,</if>
+            <if test="statusChangeDate != null">status_change_date,</if>
+            <if test="entryDate != null">entry_date,</if>
+            <if test="currentStatus != null">current_status,</if>
+            <if test="statusChangeReason != null">status_change_reason,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="stuId != null">#{stuId},</if>
+            <if test="expectedGraduationDate != null">#{expectedGraduationDate},</if>
+            <if test="statusChangeDate != null">#{statusChangeDate},</if>
+            <if test="entryDate != null">#{entryDate},</if>
+            <if test="currentStatus != null">#{currentStatus},</if>
+            <if test="statusChangeReason != null">#{statusChangeReason},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateStuEnrollment" parameterType="StuEnrollment">
+        update stu_enrollment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="stuId != null">stu_id = #{stuId},</if>
+            <if test="expectedGraduationDate != null">expected_graduation_date = #{expectedGraduationDate},</if>
+            <if test="statusChangeDate != null">status_change_date = #{statusChangeDate},</if>
+            <if test="entryDate != null">entry_date = #{entryDate},</if>
+            <if test="currentStatus != null">current_status = #{currentStatus},</if>
+            <if test="statusChangeReason != null">status_change_reason = #{statusChangeReason},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteStuEnrollmentById" parameterType="Long">
+        delete from stu_enrollment where id = #{id}
+    </delete>
+
+    <delete id="deleteStuEnrollmentByIds" parameterType="String">
+        delete from stu_enrollment where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.student.mapper.StuClassMapper">
+
+    <resultMap type="StuClass" id="StuClassResult">
+        <result property="id"    column="id"    />
+        <result property="className"    column="class_name"    />
+        <result property="grade"    column="grade"    />
+        <result property="stuId"    column="stu_id"    />
+        <result property="majorId"    column="major_id"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectStuClassVo">
+        select id, class_name, grade, stu_id, major_id, del_flag, create_by, create_time, update_by, update_time, remark from stu_class
+    </sql>
+
+    <select id="selectStuClassList" parameterType="StuClass" resultMap="StuClassResult">
+        <include refid="selectStuClassVo"/>
+        <where>
+            <if test="className != null  and className != ''"> and class_name like concat('%', #{className}, '%')</if>
+            <if test="grade != null  and grade != ''"> and grade = #{grade}</if>
+            <if test="stuId != null "> and stu_id = #{stuId}</if>
+            <if test="majorId != null "> and major_id = #{majorId}</if>
+        </where>
+    </select>
+
+    <select id="selectStuClassById" parameterType="Long" resultMap="StuClassResult">
+        <include refid="selectStuClassVo"/>
+        where stu_id = #{id}
+    </select>
+
+    <insert id="insertStuClass" parameterType="StuClass" useGeneratedKeys="true" keyProperty="id">
+        insert into stu_class
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="className != null">class_name,</if>
+            <if test="grade != null">grade,</if>
+            <if test="stuId != null">stu_id,</if>
+            <if test="majorId != null">major_id,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="className != null">#{className},</if>
+            <if test="grade != null">#{grade},</if>
+            <if test="stuId != null">#{stuId},</if>
+            <if test="majorId != null">#{majorId},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateStuClass" parameterType="StuClass">
+        update stu_class
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="className != null">class_name = #{className},</if>
+            <if test="grade != null">grade = #{grade},</if>
+            <if test="stuId != null">stu_id = #{stuId},</if>
+            <if test="majorId != null">major_id = #{majorId},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteStuClassById" parameterType="Long">
+        delete from stu_class where id = #{id}
+    </delete>
+
+    <delete id="deleteStuClassByIds" parameterType="String">
+        delete from stu_class where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
