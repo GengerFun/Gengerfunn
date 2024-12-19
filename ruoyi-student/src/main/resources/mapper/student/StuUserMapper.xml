@@ -7,11 +7,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="StuUser" id="StuUserResult">
         <result property="id"    column="id"    />
         <result property="userId"    column="user_id"    />
+        <result property="nation"    column="nation"    />
+        <result property="age"    column="age"    />
         <result property="stuName"    column="stu_name"    />
         <result property="jobType"    column="job_type"    />
         <result property="idStudent"    column="id_student"    />
         <result property="idNumber"    column="id_number"    />
         <result property="majorId"    column="major_id"    />
+        <result property="politicalStatus"    column="political_status"    />
+        <result property="sourceLocation"    column="source_location"    />
         <result property="classId"    column="class_id"    />
         <result property="dormitoryId"    column="dormitory_id"    />
         <result property="registrationStatus"    column="registration_status"    />
@@ -55,15 +59,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where user_id = #{id}
     </select>
 
-    <insert id="insertStuUser" parameterType="StuUserVO" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertStuUser" parameterType="StuUser" useGeneratedKeys="true" keyProperty="id">
         insert into stu_user
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="userId != null">user_id,</if>
+            <if test="nation != null">nation,</if>
+            <if test="age != null">age,</if>
             <if test="stuName != null">stu_name,</if>
             <if test="jobType != null">job_type,</if>
             <if test="idStudent != null">id_student,</if>
             <if test="idNumber != null">id_number,</if>
             <if test="majorId != null">major_id,</if>
+            <if test="politicalStatus != null">political_status,</if>
+            <if test="sourceLocation != null">source_location,</if>
             <if test="classId != null">class_id,</if>
             <if test="dormitoryId != null">dormitory_id,</if>
             <if test="registrationStatus != null">registration_status,</if>
@@ -77,14 +85,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateBy != null">update_by,</if>
             <if test="updateTime != null">update_time,</if>
             <if test="remark != null">remark,</if>
-         </trim>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="userId != null">#{userId},</if>
+            <if test="nation != null">#{nation},</if>
+            <if test="age != null">#{age},</if>
             <if test="stuName != null">#{stuName},</if>
             <if test="jobType != null">#{jobType},</if>
             <if test="idStudent != null">#{idStudent},</if>
             <if test="idNumber != null">#{idNumber},</if>
             <if test="majorId != null">#{majorId},</if>
+            <if test="politicalStatus != null">#{politicalStatus},</if>
+            <if test="sourceLocation != null">#{sourceLocation},</if>
             <if test="classId != null">#{classId},</if>
             <if test="dormitoryId != null">#{dormitoryId},</if>
             <if test="registrationStatus != null">#{registrationStatus},</if>
@@ -98,7 +110,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateBy != null">#{updateBy},</if>
             <if test="updateTime != null">#{updateTime},</if>
             <if test="remark != null">#{remark},</if>
-         </trim>
+        </trim>
     </insert>
 
     <update id="updateStuUser" parameterType="StuUser">

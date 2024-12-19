@@ -40,8 +40,9 @@ public class StuPaytypeController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:paytype:list')")
     @GetMapping("/list")
-    public TableDataInfo list(StuPaytype stuPaytype)
+    public TableDataInfo list()
     {
+        StuPaytype stuPaytype = new StuPaytype();
         startPage();
         List<StuPaytype> list = stuPaytypeService.selectStuPaytypeList(stuPaytype);
         return getDataTable(list);

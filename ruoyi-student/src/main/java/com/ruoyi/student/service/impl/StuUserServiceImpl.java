@@ -1,6 +1,9 @@
 package com.ruoyi.student.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.student.domain.StuClass;
 import com.ruoyi.student.domain.StuUser;
@@ -10,6 +13,8 @@ import com.ruoyi.student.mapper.StuUserMapper;
 import com.ruoyi.student.service.IStuUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import static com.ruoyi.common.utils.SecurityUtils.getLoginUser;
 
 /**
  * 学生信息Service业务层处理
@@ -43,6 +48,7 @@ public class StuUserServiceImpl implements IStuUserService
         stuUserDto.setIdNumber(stuUser.getIdNumber());
         stuUserDto.setMajorId(stuUser.getMajorId());
         stuUserDto.setClassId(stuUser.getClassId());
+        stuUserDto.setDormitoryId(stuUser.getDormitoryId());
         stuUserDto.setStuName(stuUser.getStuName());
         return stuUserDto;
     }
@@ -68,6 +74,9 @@ public class StuUserServiceImpl implements IStuUserService
     @Override
     public int insertStuUser(StuUser stuUser)
     {
+        LoginUser loginUser = getLoginUser();
+        SysUser user = loginUser.getUser();
+        stuUser.setUserId(user.getUserId());
         stuUser.setCreateTime(DateUtils.getNowDate());
         return stuUserMapper.insertStuUser(stuUser);
     }

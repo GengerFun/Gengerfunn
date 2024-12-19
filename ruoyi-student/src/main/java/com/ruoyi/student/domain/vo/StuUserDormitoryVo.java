@@ -1,17 +1,18 @@
-package com.ruoyi.student.domain;
+package com.ruoyi.student.domain.vo;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
+import com.ruoyi.student.domain.StuDormitory;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * 学生信息对象 stu_user
  *
  * @author ruoyi
- * @date 2024-12-18
+ * @date 2024-12-11
  */
-public class StuUser extends BaseEntity
+public class StuUserDormitoryVo extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
@@ -22,13 +23,17 @@ public class StuUser extends BaseEntity
     @Excel(name = "用户id")
     private Long userId;
 
-    /** 名族 */
-    @Excel(name = "名族")
-    private String nation;
 
-    /** 年龄 */
-    @Excel(name = "年龄")
-    private String age;
+    public StuDormitory getStuDormitory() {
+        return stuDormitory;
+    }
+
+    public void setStuDormitory(StuDormitory stuDormitory) {
+        this.stuDormitory = stuDormitory;
+    }
+
+    /** 宿舍详情 */
+    private StuDormitory stuDormitory;
 
     /** 学生姓名/老师姓名 */
     @Excel(name = "学生姓名/老师姓名")
@@ -49,14 +54,6 @@ public class StuUser extends BaseEntity
     /** 专业ID */
     @Excel(name = "专业ID")
     private Long majorId;
-
-    /** 政治面貌 */
-    @Excel(name = "政治面貌")
-    private String politicalStatus;
-
-    /** 生源所在地 */
-    @Excel(name = "生源所在地")
-    private String sourceLocation;
 
     /** 班级ID */
     @Excel(name = "班级ID")
@@ -107,24 +104,6 @@ public class StuUser extends BaseEntity
     {
         return userId;
     }
-    public void setNation(String nation)
-    {
-        this.nation = nation;
-    }
-
-    public String getNation()
-    {
-        return nation;
-    }
-    public void setAge(String age)
-    {
-        this.age = age;
-    }
-
-    public String getAge()
-    {
-        return age;
-    }
     public void setStuName(String stuName)
     {
         this.stuName = stuName;
@@ -169,24 +148,6 @@ public class StuUser extends BaseEntity
     public Long getMajorId()
     {
         return majorId;
-    }
-    public void setPoliticalStatus(String politicalStatus)
-    {
-        this.politicalStatus = politicalStatus;
-    }
-
-    public String getPoliticalStatus()
-    {
-        return politicalStatus;
-    }
-    public void setSourceLocation(String sourceLocation)
-    {
-        this.sourceLocation = sourceLocation;
-    }
-
-    public String getSourceLocation()
-    {
-        return sourceLocation;
     }
     public void setClassId(Long classId)
     {
@@ -266,15 +227,11 @@ public class StuUser extends BaseEntity
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
             .append("userId", getUserId())
-            .append("nation", getNation())
-            .append("age", getAge())
             .append("stuName", getStuName())
             .append("jobType", getJobType())
             .append("idStudent", getIdStudent())
             .append("idNumber", getIdNumber())
             .append("majorId", getMajorId())
-            .append("politicalStatus", getPoliticalStatus())
-            .append("sourceLocation", getSourceLocation())
             .append("classId", getClassId())
             .append("dormitoryId", getDormitoryId())
             .append("registrationStatus", getRegistrationStatus())

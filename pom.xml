@@ -21,6 +21,7 @@
         <spring-framework.version>5.3.33</spring-framework.version>
         <spring-security.version>5.7.12</spring-security.version>
         <druid.version>1.2.23</druid.version>
+        <hutool.version>5.8.24</hutool.version>
         <bitwalker.version>1.21</bitwalker.version>
         <swagger.version>3.0.0</swagger.version>
         <kaptcha.version>2.3.3</kaptcha.version>
@@ -103,6 +104,12 @@
                         <artifactId>swagger-models</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
             </dependency>
 
             <!-- io常用工具类 -->

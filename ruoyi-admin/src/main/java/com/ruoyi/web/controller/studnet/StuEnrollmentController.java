@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.student.domain.StuEnrollment;
-import com.ruoyi.student.domain.StuUser;
 import com.ruoyi.student.domain.dto.StuUserDto;
 import com.ruoyi.student.domain.vo.StuUserVO;
 import com.ruoyi.student.service.IStuEnrollmentService;

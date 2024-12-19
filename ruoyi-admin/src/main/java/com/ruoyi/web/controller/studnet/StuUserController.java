@@ -3,7 +3,12 @@ package com.ruoyi.web.controller.studnet;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
+import cn.hutool.core.util.ObjectUtil;
+import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.common.core.domain.model.LoginUser;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.student.domain.StuUser;
+import com.ruoyi.student.domain.dto.StuUserDto;
 import com.ruoyi.student.service.IStuUserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,10 +79,16 @@ public class StuUserController extends BaseController
      * 新增学生信息
      */
     @PreAuthorize("@ss.hasPermi('system:user:add')")
-    @Log(title = "学生信息", businessType = BusinessType.INSERT)
-    @PostMapping
+    @Log(title = "学生实名", businessType = BusinessType.INSERT)
+    @PostMapping("/realName")
     public AjaxResult add(@RequestBody StuUser stuUser)
     {
+        LoginUser loginUser = getLoginUser();
+        SysUser user = loginUser.getUser();
+        StuUserDto stuUserDto = stuUserService.selectStuUserById(user.getUserId());
+        if (ObjectUtil.isNotEmpty(stuUserDto.getUserId())){
+            throw new RuntimeException("请勿重复实名！");
+        }
         return toAjax(stuUserService.insertStuUser(stuUser));
     }
 

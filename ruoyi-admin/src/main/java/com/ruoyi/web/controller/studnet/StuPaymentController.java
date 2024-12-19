@@ -72,11 +72,11 @@ public class StuPaymentController extends BaseController
         });
         StuUserPaymentVo stuUserPaymentVo = new StuUserPaymentVo();
         List<StuPayment> paymentList = list.stream()
-                .filter(payment -> "0".equals(payment.getStatus()))
+                .filter(payment -> "1".equals(payment.getStatus()))
                 .collect(Collectors.toList());
 
         List<StuPayment> noPaymentList = list.stream()
-                .filter(noPayment -> "1".equals(noPayment.getStatus()))
+                .filter(noPayment -> "0".equals(noPayment.getStatus()))
                 .collect(Collectors.toList());
         stuUserPaymentVo.setNoPaymentList(noPaymentList);
         stuUserPaymentVo.setPaymentList(paymentList);
@@ -85,7 +85,6 @@ public class StuPaymentController extends BaseController
         stuUserPaymentVo.setIdStudent(stuUserDto.getIdStudent());
         stuUserPaymentVo.setStuName(stuUserDto.getStuName());
         stuUserPaymentVo.setClassName(stuUserDto.getStuClass().getClassName());
-        stuUserPaymentVo.setStuName(stuUserDto.getStuName());
         StuMajor stuMajor = stuMajorService.selectStuMajorById(stuUserDto.getMajorId());
 
         stuUserPaymentVo.setMajorName(stuMajor.getMajorName());

@@ -1,34 +1,84 @@
-package com.ruoyi.student.domain;
+package com.ruoyi.student.domain.vo;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
+import com.ruoyi.student.domain.StuMaterial;
+import com.ruoyi.student.domain.StuMaterialPickup;
+import com.ruoyi.student.domain.StuPayment;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+import java.util.List;
 
 /**
  * 学生信息对象 stu_user
  *
  * @author ruoyi
- * @date 2024-12-18
+ * @date 2024-12-11
  */
-public class StuUser extends BaseEntity
+public class StuUserMaterialVo extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
     /** 主键 */
     private Long id;
 
+    public String getMajorName() {
+        return majorName;
+    }
+
+    public void setMajorName(String majorName) {
+        this.majorName = majorName;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    /** 专业名称 */
+    private String majorName;
+
+    /** 所属院系 */
+    private String department;
+
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    /** 班级名称 */
+    private String className;
+
+    private List<StuMaterialPickupVo> pickup;
+
+    public List<StuMaterialPickupVo> getPickup() {
+        return pickup;
+    }
+
+    public void setPickup(List<StuMaterialPickupVo> pickup) {
+        this.pickup = pickup;
+    }
+
+    public List<StuMaterialPickupVo> getNoPickup() {
+        return noPickup;
+    }
+
+    public void setNoPickup(List<StuMaterialPickupVo> noPickup) {
+        this.noPickup = noPickup;
+    }
+
+    private List<StuMaterialPickupVo> noPickup;
     /** 用户id */
     @Excel(name = "用户id")
     private Long userId;
-
-    /** 名族 */
-    @Excel(name = "名族")
-    private String nation;
-
-    /** 年龄 */
-    @Excel(name = "年龄")
-    private String age;
 
     /** 学生姓名/老师姓名 */
     @Excel(name = "学生姓名/老师姓名")
@@ -49,14 +99,6 @@ public class StuUser extends BaseEntity
     /** 专业ID */
     @Excel(name = "专业ID")
     private Long majorId;
-
-    /** 政治面貌 */
-    @Excel(name = "政治面貌")
-    private String politicalStatus;
-
-    /** 生源所在地 */
-    @Excel(name = "生源所在地")
-    private String sourceLocation;
 
     /** 班级ID */
     @Excel(name = "班级ID")
@@ -107,24 +149,6 @@ public class StuUser extends BaseEntity
     {
         return userId;
     }
-    public void setNation(String nation)
-    {
-        this.nation = nation;
-    }
-
-    public String getNation()
-    {
-        return nation;
-    }
-    public void setAge(String age)
-    {
-        this.age = age;
-    }
-
-    public String getAge()
-    {
-        return age;
-    }
     public void setStuName(String stuName)
     {
         this.stuName = stuName;
@@ -169,24 +193,6 @@ public class StuUser extends BaseEntity
     public Long getMajorId()
     {
         return majorId;
-    }
-    public void setPoliticalStatus(String politicalStatus)
-    {
-        this.politicalStatus = politicalStatus;
-    }
-
-    public String getPoliticalStatus()
-    {
-        return politicalStatus;
-    }
-    public void setSourceLocation(String sourceLocation)
-    {
-        this.sourceLocation = sourceLocation;
-    }
-
-    public String getSourceLocation()
-    {
-        return sourceLocation;
     }
     public void setClassId(Long classId)
     {
@@ -266,15 +272,11 @@ public class StuUser extends BaseEntity
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
             .append("userId", getUserId())
-            .append("nation", getNation())
-            .append("age", getAge())
             .append("stuName", getStuName())
             .append("jobType", getJobType())
             .append("idStudent", getIdStudent())
             .append("idNumber", getIdNumber())
             .append("majorId", getMajorId())
-            .append("politicalStatus", getPoliticalStatus())
-            .append("sourceLocation", getSourceLocation())
             .append("classId", getClassId())
             .append("dormitoryId", getDormitoryId())
             .append("registrationStatus", getRegistrationStatus())

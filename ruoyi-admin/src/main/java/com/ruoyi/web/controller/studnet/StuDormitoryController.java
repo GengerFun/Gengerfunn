@@ -3,8 +3,14 @@ package com.ruoyi.web.controller.studnet;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
+import cn.hutool.core.bean.BeanUtil;
+import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.student.domain.StuDormitory;
+import com.ruoyi.student.domain.dto.StuUserDto;
+import com.ruoyi.student.domain.vo.StuUserDormitoryVo;
 import com.ruoyi.student.service.IStuDormitoryService;
+import com.ruoyi.student.service.IStuUserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +41,8 @@ public class StuDormitoryController extends BaseController
     @Autowired
     private IStuDormitoryService stuDormitoryService;
 
+    @Autowired
+    private IStuUserService stuUserService;
     /**
      * 查询宿舍信息列表
      */
@@ -64,10 +72,16 @@ public class StuDormitoryController extends BaseController
      * 获取宿舍信息详细信息
      */
     @PreAuthorize("@ss.hasPermi('system:dormitory:query')")
-    @GetMapping(value = "/{id}")
-    public AjaxResult getInfo(@PathVariable("id") Long id)
+    @GetMapping("/getDormitoryByUserId")
+    public AjaxResult getDormitoryByUserId()
     {
-        return success(stuDormitoryService.selectStuDormitoryById(id));
+        LoginUser loginUser = getLoginUser();
+        SysUser user = loginUser.getUser();
+        StuUserDto stuUserDto = stuUserService.selectStuUserById(user.getUserId());
+        StuUserDormitoryVo stuUserDormitoryVo = BeanUtil.copyProperties(stuUserDto, StuUserDormitoryVo.class);
+        StuDormitory stuDormitory = stuDormitoryService.selectStuDormitoryById(stuUserDto.getDormitoryId());
+        stuUserDormitoryVo.setStuDormitory(stuDormitory);
+        return success(stuUserDormitoryVo);
     }
 
     /**

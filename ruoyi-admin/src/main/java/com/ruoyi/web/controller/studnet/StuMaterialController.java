@@ -39,10 +39,11 @@ public class StuMaterialController extends BaseController
      * 查询物资管理列表
      */
     @PreAuthorize("@ss.hasPermi('system:material:list')")
-    @GetMapping("/list")
-    public TableDataInfo list(StuMaterial stuMaterial)
+    @GetMapping("/getAllMaterial")
+    public TableDataInfo getAllMaterial()
     {
         startPage();
+        StuMaterial stuMaterial = new StuMaterial();
         List<StuMaterial> list = stuMaterialService.selectStuMaterialList(stuMaterial);
         return getDataTable(list);
     }
