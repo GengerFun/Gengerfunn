@@ -46,7 +46,7 @@ public class StuDormitoryController extends BaseController
     /**
      * 查询宿舍信息列表
      */
-    @PreAuthorize("@ss.hasPermi('system:dormitory:list')")
+
     @GetMapping("/list")
     public TableDataInfo list(StuDormitory stuDormitory)
     {
@@ -58,7 +58,7 @@ public class StuDormitoryController extends BaseController
     /**
      * 导出宿舍信息列表
      */
-    @PreAuthorize("@ss.hasPermi('system:dormitory:export')")
+
     @Log(title = "宿舍信息", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, StuDormitory stuDormitory)
@@ -71,7 +71,7 @@ public class StuDormitoryController extends BaseController
     /**
      * 获取宿舍信息详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:dormitory:query')")
+
     @GetMapping("/getDormitoryByUserId")
     public AjaxResult getDormitoryByUserId()
     {
@@ -87,7 +87,7 @@ public class StuDormitoryController extends BaseController
     /**
      * 新增宿舍信息
      */
-    @PreAuthorize("@ss.hasPermi('system:dormitory:add')")
+
     @Log(title = "宿舍信息", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody StuDormitory stuDormitory)
@@ -98,7 +98,7 @@ public class StuDormitoryController extends BaseController
     /**
      * 修改宿舍信息
      */
-    @PreAuthorize("@ss.hasPermi('system:dormitory:edit')")
+
     @Log(title = "宿舍信息", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody StuDormitory stuDormitory)
@@ -109,7 +109,7 @@ public class StuDormitoryController extends BaseController
     /**
      * 删除宿舍信息
      */
-    @PreAuthorize("@ss.hasPermi('system:dormitory:remove')")
+
     @Log(title = "宿舍信息", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)

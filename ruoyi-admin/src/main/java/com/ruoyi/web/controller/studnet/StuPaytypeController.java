@@ -38,7 +38,7 @@ public class StuPaytypeController extends BaseController
     /**
      * 查询缴费类型列表
      */
-    @PreAuthorize("@ss.hasPermi('system:paytype:list')")
+//    @PreAuthorize("@ss.hasPermi('system:paytype:list')")
     @GetMapping("/list")
     public TableDataInfo list()
     {
@@ -51,7 +51,7 @@ public class StuPaytypeController extends BaseController
     /**
      * 导出缴费类型列表
      */
-    @PreAuthorize("@ss.hasPermi('system:paytype:export')")
+//    @PreAuthorize("@ss.hasPermi('system:paytype:export')")
     @Log(title = "缴费类型", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, StuPaytype stuPaytype)
@@ -64,7 +64,7 @@ public class StuPaytypeController extends BaseController
     /**
      * 获取缴费类型详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:paytype:query')")
+//    @PreAuthorize("@ss.hasPermi('system:paytype:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
@@ -74,7 +74,7 @@ public class StuPaytypeController extends BaseController
     /**
      * 新增缴费类型
      */
-    @PreAuthorize("@ss.hasPermi('system:paytype:add')")
+//    @PreAuthorize("@ss.hasPermi('system:paytype:add')")
     @Log(title = "缴费类型", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody StuPaytype stuPaytype)
@@ -85,7 +85,7 @@ public class StuPaytypeController extends BaseController
     /**
      * 修改缴费类型
      */
-    @PreAuthorize("@ss.hasPermi('system:paytype:edit')")
+//    @PreAuthorize("@ss.hasPermi('system:paytype:edit')")
     @Log(title = "缴费类型", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody StuPaytype stuPaytype)
@@ -96,7 +96,7 @@ public class StuPaytypeController extends BaseController
     /**
      * 删除缴费类型
      */
-    @PreAuthorize("@ss.hasPermi('system:paytype:remove')")
+//    @PreAuthorize("@ss.hasPermi('system:paytype:remove')")
     @Log(title = "缴费类型", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)

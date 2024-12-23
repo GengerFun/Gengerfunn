@@ -1,6 +1,7 @@
 package com.ruoyi.student.mapper;
 
 import com.ruoyi.student.domain.StuPaytype;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ import java.util.List;
  * @author ruoyi
  * @date 2024-12-15
  */
+@Mapper
 public interface StuPaytypeMapper
 {
     /**

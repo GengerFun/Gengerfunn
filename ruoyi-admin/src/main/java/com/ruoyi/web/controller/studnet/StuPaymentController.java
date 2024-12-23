@@ -4,17 +4,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.student.domain.StuMajor;
+import com.ruoyi.student.domain.StuMaterialPickup;
 import com.ruoyi.student.domain.StuPayment;
 import com.ruoyi.student.domain.StuPaytype;
 import com.ruoyi.student.domain.dto.StuUserDto;
+import com.ruoyi.student.domain.vo.PaymentVo;
 import com.ruoyi.student.domain.vo.StuUserPaymentVo;
-import com.ruoyi.student.service.IStuMajorService;
-import com.ruoyi.student.service.IStuPaymentService;
-import com.ruoyi.student.service.IStuPaytypeService;
-import com.ruoyi.student.service.IStuUserService;
+import com.ruoyi.student.service.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,11 +52,16 @@ public class StuPaymentController extends BaseController
     private IStuMajorService stuMajorService;
 
     @Autowired
+    private IStuMaterialService stuMaterialService;
+    @Autowired
+    private IStuMaterialPickupService stuMaterialPickupService;
+
+    @Autowired
     private IStuPaytypeService stuPaytypeService;
     /**
      * 查询缴费记录列表
      */
-    @PreAuthorize("@ss.hasPermi('system:payment:list')")
+//    @PreAuthorize("@ss.hasPermi('system:payment:list')")
     @GetMapping("/list")
     public AjaxResult list()
     {
@@ -64,19 +69,19 @@ public class StuPaymentController extends BaseController
         LoginUser loginUser = getLoginUser();
         SysUser user = loginUser.getUser();
         stuPayment.setStuId(user.getUserId());
-        startPage();
+        //startPage();
         List<StuPayment> list = stuPaymentService.selectStuPaymentList(stuPayment);
-        list.stream().forEach(payment ->{
-            StuPaytype stuPaytype = stuPaytypeService.selectStuPaytypeById(payment.getPayType());
-            payment.setRemark(stuPaytype.getPayName());
-        });
+//        list.stream().forEach(payment ->{
+//            StuPaytype stuPaytype = stuPaytypeService.selectStuPaytypeById(payment.getPayType());
+//            payment.setRemark(stuPaytype.getPayName());
+//        });
         StuUserPaymentVo stuUserPaymentVo = new StuUserPaymentVo();
         List<StuPayment> paymentList = list.stream()
-                .filter(payment -> "1".equals(payment.getStatus()))
+                .filter(payment -> "0".equals(payment.getStatus()))
                 .collect(Collectors.toList());
 
         List<StuPayment> noPaymentList = list.stream()
-                .filter(noPayment -> "0".equals(noPayment.getStatus()))
+                .filter(noPayment -> "1".equals(noPayment.getStatus()))
                 .collect(Collectors.toList());
         stuUserPaymentVo.setNoPaymentList(noPaymentList);
         stuUserPaymentVo.setPaymentList(paymentList);
@@ -96,7 +101,7 @@ public class StuPaymentController extends BaseController
     /**
      * 导出缴费记录列表
      */
-    @PreAuthorize("@ss.hasPermi('system:payment:export')")
+//    @PreAuthorize("@ss.hasPermi('system:payment:export')")
     @Log(title = "缴费记录", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, StuPayment stuPayment)
@@ -109,7 +114,7 @@ public class StuPaymentController extends BaseController
     /**
      * 获取缴费记录详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:payment:query')")
+//    @PreAuthorize("@ss.hasPermi('system:payment:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
@@ -119,7 +124,7 @@ public class StuPaymentController extends BaseController
     /**
      * 新增缴费记录
      */
-    @PreAuthorize("@ss.hasPermi('system:payment:add')")
+//    @PreAuthorize("@ss.hasPermi('system:payment:add')")
     @Log(title = "缴费记录", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody StuPayment stuPayment)
@@ -130,7 +135,7 @@ public class StuPaymentController extends BaseController
     /**
      * 修改缴费记录
      */
-    @PreAuthorize("@ss.hasPermi('system:payment:edit')")
+//    @PreAuthorize("@ss.hasPermi('system:payment:edit')")
     @Log(title = "缴费记录", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody StuPayment stuPayment)
@@ -141,11 +146,49 @@ public class StuPaymentController extends BaseController
     /**
      * 删除缴费记录
      */
-    @PreAuthorize("@ss.hasPermi('system:payment:remove')")
+//    @PreAuthorize("@ss.hasPermi('system:payment:remove')")
     @Log(title = "缴费记录", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)
     {
         return toAjax(stuPaymentService.deleteStuPaymentByIds(ids));
+    }
+
+
+    /**
+     * 缴费记录
+     */
+//    @PreAuthorize("@ss.hasPermi('system:payment:add')")
+    @Log(title = "缴费记录", businessType = BusinessType.INSERT)
+    @PostMapping("/paymentMoney")
+    public AjaxResult paymentMoney(@RequestBody List<PaymentVo> paymentList)
+    {
+        LoginUser loginUser = getLoginUser();
+        SysUser user = loginUser.getUser();
+        StuPayment payments = new StuPayment();
+        payments.setStuId(user.getUserId());
+        List<StuPayment> stuPayments = stuPaymentService.selectStuPaymentList(payments);
+        if(ObjectUtil.isNotEmpty(stuPayments)){
+            throw new RuntimeException("请勿重复缴费！");
+        }
+        paymentList.stream().forEach(payment ->{
+            StuPayment stuPayment = new StuPayment();
+            stuPayment.setStatus(payment.getStatus());
+            stuPayment.setPayType(payment.getId());
+            stuPayment.setAmount(payment.getAmount());
+            stuPayment.setStuId(user.getUserId());
+            stuPayment.setRemark(payment.getPayName());
+            stuPaymentService.insertStuPayment(stuPayment);
+            if("2".equals(payment.getType())){
+                StuMaterialPickup stuMaterialPickup = new StuMaterialPickup();
+                stuMaterialPickup.setStuId(user.getUserId());
+                stuMaterialPickup.setMaterialId(payment.getId());
+                stuMaterialPickup.setQuantity(1L);
+                stuMaterialPickup.setStatus("0");
+                stuMaterialPickupService.insertStuMaterialPickup(stuMaterialPickup);
+            }
+        });
+
+        return success("缴费成功！");
     }
 }

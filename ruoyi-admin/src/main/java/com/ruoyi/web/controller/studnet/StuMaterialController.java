@@ -38,7 +38,7 @@ public class StuMaterialController extends BaseController
     /**
      * 查询物资管理列表
      */
-    @PreAuthorize("@ss.hasPermi('system:material:list')")
+//    @PreAuthorize("@ss.hasPermi('system:material:list')")
     @GetMapping("/getAllMaterial")
     public TableDataInfo getAllMaterial()
     {
@@ -51,7 +51,7 @@ public class StuMaterialController extends BaseController
     /**
      * 导出物资管理列表
      */
-    @PreAuthorize("@ss.hasPermi('system:material:export')")
+//    @PreAuthorize("@ss.hasPermi('system:material:export')")
     @Log(title = "物资管理", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, StuMaterial stuMaterial)
@@ -64,7 +64,7 @@ public class StuMaterialController extends BaseController
     /**
      * 获取物资管理详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:material:query')")
+//    @PreAuthorize("@ss.hasPermi('system:material:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
@@ -74,7 +74,7 @@ public class StuMaterialController extends BaseController
     /**
      * 新增物资管理
      */
-    @PreAuthorize("@ss.hasPermi('system:material:add')")
+//    @PreAuthorize("@ss.hasPermi('system:material:add')")
     @Log(title = "物资管理", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody StuMaterial stuMaterial)
@@ -85,7 +85,7 @@ public class StuMaterialController extends BaseController
     /**
      * 修改物资管理
      */
-    @PreAuthorize("@ss.hasPermi('system:material:edit')")
+//    @PreAuthorize("@ss.hasPermi('system:material:edit')")
     @Log(title = "物资管理", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody StuMaterial stuMaterial)
@@ -96,7 +96,7 @@ public class StuMaterialController extends BaseController
     /**
      * 删除物资管理
      */
-    @PreAuthorize("@ss.hasPermi('system:material:remove')")
+//    @PreAuthorize("@ss.hasPermi('system:material:remove')")
     @Log(title = "物资管理", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)

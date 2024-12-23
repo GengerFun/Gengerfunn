@@ -2,6 +2,7 @@ package com.ruoyi.student.service.impl;
 
 import java.util.List;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.utils.DateUtils;
@@ -41,15 +42,18 @@ public class StuUserServiceImpl implements IStuUserService
     public StuUserDto selectStuUserById(Long id)
     {
         StuUser stuUser = stuUserMapper.selectStuUserById(id);
-        StuClass stuClass = stuClassMapper.selectStuClassById(id);
         StuUserDto stuUserDto = new StuUserDto();
-        stuUserDto.setStuClass(stuClass);
-        stuUserDto.setIdStudent(stuUser.getIdStudent());
-        stuUserDto.setIdNumber(stuUser.getIdNumber());
-        stuUserDto.setMajorId(stuUser.getMajorId());
-        stuUserDto.setClassId(stuUser.getClassId());
-        stuUserDto.setDormitoryId(stuUser.getDormitoryId());
-        stuUserDto.setStuName(stuUser.getStuName());
+        if (ObjectUtil.isNotEmpty(stuUser)){
+            StuClass stuClass = stuClassMapper.selectStuClassById(id);
+            stuUserDto.setUserId(stuUser.getUserId());
+            stuUserDto.setStuClass(stuClass);
+            stuUserDto.setIdStudent(stuUser.getIdStudent());
+            stuUserDto.setIdNumber(stuUser.getIdNumber());
+            stuUserDto.setMajorId(stuUser.getMajorId());
+            stuUserDto.setClassId(stuUser.getClassId());
+            stuUserDto.setDormitoryId(stuUser.getDormitoryId());
+            stuUserDto.setStuName(stuUser.getStuName());
+        }
         return stuUserDto;
     }
 
@@ -71,12 +75,17 @@ public class StuUserServiceImpl implements IStuUserService
      * @param stuUser 学生信息
      * @return 结果
      */
+    // TODO: 2024-12-21  分配学生宿舍，班级先默认分配到1班
     @Override
     public int insertStuUser(StuUser stuUser)
     {
         LoginUser loginUser = getLoginUser();
         SysUser user = loginUser.getUser();
         stuUser.setUserId(user.getUserId());
+        stuUser.setClassId(1L);
+        stuUser.setMajorId(1L);
+        stuUser.setDormitoryId(1L);
+        stuUser.setRegistrationStatus("1");
         stuUser.setCreateTime(DateUtils.getNowDate());
         return stuUserMapper.insertStuUser(stuUser);
     }

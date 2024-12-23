@@ -49,7 +49,7 @@ public class StuEnrollmentController extends BaseController
     /**
      * 查询学籍信息列表
      */
-    @PreAuthorize("@ss.hasPermi('system:enrollment:list')")
+
     @GetMapping("/list")
     public TableDataInfo list(StuEnrollment stuEnrollment)
     {
@@ -61,7 +61,7 @@ public class StuEnrollmentController extends BaseController
     /**
      * 导出学籍信息列表
      */
-    @PreAuthorize("@ss.hasPermi('system:enrollment:export')")
+
     @Log(title = "学籍信息", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, StuEnrollment stuEnrollment)
@@ -93,7 +93,7 @@ public class StuEnrollmentController extends BaseController
     /**
      * 新增学籍信息
      */
-    @PreAuthorize("@ss.hasPermi('system:enrollment:add')")
+//     @PreAuthorize("@ss.hasPermi('system:enrollment:add')")
     @Log(title = "学籍信息", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody StuEnrollment stuEnrollment)
@@ -104,7 +104,7 @@ public class StuEnrollmentController extends BaseController
     /**
      * 修改学籍信息
      */
-    @PreAuthorize("@ss.hasPermi('system:enrollment:edit')")
+//     @PreAuthorize("@ss.hasPermi('system:enrollment:edit')")
     @Log(title = "学籍信息", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody StuEnrollment stuEnrollment)
@@ -115,7 +115,7 @@ public class StuEnrollmentController extends BaseController
     /**
      * 删除学籍信息
      */
-    @PreAuthorize("@ss.hasPermi('system:enrollment:remove')")
+//     @PreAuthorize("@ss.hasPermi('system:enrollment:remove')")
     @Log(title = "学籍信息", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)

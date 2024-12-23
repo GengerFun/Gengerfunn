@@ -7,8 +7,10 @@ import cn.hutool.core.util.ObjectUtil;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.student.domain.StuPayment;
 import com.ruoyi.student.domain.StuUser;
 import com.ruoyi.student.domain.dto.StuUserDto;
+import com.ruoyi.student.service.IStuPaymentService;
 import com.ruoyi.student.service.IStuUserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,22 +42,28 @@ public class StuUserController extends BaseController
     @Autowired
     private IStuUserService stuUserService;
 
+    @Autowired
+    private IStuPaymentService stuPaymentService;
     /**
      * 查询学生信息列表
      */
-    @PreAuthorize("@ss.hasPermi('system:user:list')")
+//    @PreAuthorize("@ss.hasPermi('system:user:list')")
     @GetMapping("/list")
-    public TableDataInfo list(StuUser stuUser)
+    public AjaxResult getAllMember()
     {
-        startPage();
+        LoginUser loginUser = getLoginUser();
+        SysUser user = loginUser.getUser();
+        StuUser stuUser = new StuUser();
+        StuUserDto stuUserDto = stuUserService.selectStuUserById(user.getUserId());
+        stuUser.setClassId(stuUserDto.getClassId());
         List<StuUser> list = stuUserService.selectStuUserList(stuUser);
-        return getDataTable(list);
+        return success(list);
     }
 
     /**
      * 导出学生信息列表
      */
-    @PreAuthorize("@ss.hasPermi('system:user:export')")
+//    @PreAuthorize("@ss.hasPermi('system:user:export')")
     @Log(title = "学生信息", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, StuUser stuUser)
@@ -68,7 +76,7 @@ public class StuUserController extends BaseController
     /**
      * 获取学生信息详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:user:query')")
+//    @PreAuthorize("@ss.hasPermi('system:user:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
@@ -78,7 +86,7 @@ public class StuUserController extends BaseController
     /**
      * 新增学生信息
      */
-    @PreAuthorize("@ss.hasPermi('system:user:add')")
+//    @PreAuthorize("@ss.hasPermi('system:user:add')")
     @Log(title = "学生实名", businessType = BusinessType.INSERT)
     @PostMapping("/realName")
     public AjaxResult add(@RequestBody StuUser stuUser)
@@ -86,16 +94,48 @@ public class StuUserController extends BaseController
         LoginUser loginUser = getLoginUser();
         SysUser user = loginUser.getUser();
         StuUserDto stuUserDto = stuUserService.selectStuUserById(user.getUserId());
-        if (ObjectUtil.isNotEmpty(stuUserDto.getUserId())){
+        if (ObjectUtil.isNotEmpty(stuUserDto) && ObjectUtil.isNotEmpty(stuUserDto.getUserId())){
             throw new RuntimeException("请勿重复实名！");
         }
         return toAjax(stuUserService.insertStuUser(stuUser));
     }
 
+
+
+    /**
+     * 判断学生是否实名或者缴费
+     */
+//    @PreAuthorize("@ss.hasPermi('system:user:query')")
+    @GetMapping(value = "/getPression")
+    public AjaxResult getPression()
+    {
+        LoginUser loginUser = getLoginUser();
+        SysUser user = loginUser.getUser();
+        StuUser stuUser = new StuUser();
+        stuUser.setUserId(user.getUserId());
+        List<StuUser> stuUsers = stuUserService.selectStuUserList(stuUser);
+        StuPayment stuPayment = new StuPayment();
+        stuPayment.setStuId(user.getUserId());
+        List<StuPayment> stuPayments = stuPaymentService.selectStuPaymentList(stuPayment);
+        // 都没有操作
+        /*if (stuUsers.size()==0 && stuPayments.size() == 0){
+return AjaxResult.success("未实名");
+        }*/
+        // 都已完成
+        if (stuUsers.size()!=0 && stuPayments.size() != 0){
+            return AjaxResult.success("已缴费");
+        }
+
+        if (stuUsers.size()!=0 && stuPayments.size() == 0){
+            return AjaxResult.success("已实名未缴费");
+        }
+        return AjaxResult.success("未实名");
+    }
+
     /**
      * 修改学生信息
      */
-    @PreAuthorize("@ss.hasPermi('system:user:edit')")
+//    @PreAuthorize("@ss.hasPermi('system:user:edit')")
     @Log(title = "学生信息", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody StuUser stuUser)
@@ -106,7 +146,7 @@ public class StuUserController extends BaseController
     /**
      * 删除学生信息
      */
-    @PreAuthorize("@ss.hasPermi('system:user:remove')")
+//    @PreAuthorize("@ss.hasPermi('system:user:remove')")
     @Log(title = "学生信息", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)

@@ -60,7 +60,7 @@ public class StuMaterialPickupController extends BaseController
     /**
      * 查询物资领取记录列表
      */
-    @PreAuthorize("@ss.hasPermi('system:pickup:list')")
+//    @PreAuthorize("@ss.hasPermi('system:pickup:list')")
     @GetMapping("/list")
     public AjaxResult list()
     {
@@ -99,7 +99,7 @@ public class StuMaterialPickupController extends BaseController
     /**
      * 导出物资领取记录列表
      */
-    @PreAuthorize("@ss.hasPermi('system:pickup:export')")
+//    @PreAuthorize("@ss.hasPermi('system:pickup:export')")
     @Log(title = "物资领取记录", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, StuMaterialPickup stuMaterialPickup)
@@ -112,7 +112,7 @@ public class StuMaterialPickupController extends BaseController
     /**
      * 获取物资领取记录详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:pickup:query')")
+//    @PreAuthorize("@ss.hasPermi('system:pickup:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
@@ -122,7 +122,7 @@ public class StuMaterialPickupController extends BaseController
     /**
      * 新增物资领取记录
      */
-    @PreAuthorize("@ss.hasPermi('system:pickup:add')")
+//    @PreAuthorize("@ss.hasPermi('system:pickup:add')")
     @Log(title = "物资领取记录", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody StuMaterialPickup stuMaterialPickup)
@@ -133,7 +133,7 @@ public class StuMaterialPickupController extends BaseController
     /**
      * 修改物资领取记录
      */
-    @PreAuthorize("@ss.hasPermi('system:pickup:edit')")
+//    @PreAuthorize("@ss.hasPermi('system:pickup:edit')")
     @Log(title = "物资领取记录", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody StuMaterialPickup stuMaterialPickup)
@@ -144,7 +144,7 @@ public class StuMaterialPickupController extends BaseController
     /**
      * 删除物资领取记录
      */
-    @PreAuthorize("@ss.hasPermi('system:pickup:remove')")
+//    @PreAuthorize("@ss.hasPermi('system:pickup:remove')")
     @Log(title = "物资领取记录", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)

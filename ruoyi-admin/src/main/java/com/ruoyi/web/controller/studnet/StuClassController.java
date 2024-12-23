@@ -38,7 +38,7 @@ public class StuClassController extends BaseController
     /**
      * 查询班级信息列表
      */
-    @PreAuthorize("@ss.hasPermi('system:class:list')")
+
     @GetMapping("/list")
     public TableDataInfo list(StuClass stuClass)
     {
@@ -50,7 +50,7 @@ public class StuClassController extends BaseController
     /**
      * 导出班级信息列表
      */
-    @PreAuthorize("@ss.hasPermi('system:class:export')")
+
     @Log(title = "班级信息", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, StuClass stuClass)
@@ -63,7 +63,7 @@ public class StuClassController extends BaseController
     /**
      * 获取班级信息详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:class:query')")
+
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
@@ -73,7 +73,7 @@ public class StuClassController extends BaseController
     /**
      * 新增班级信息
      */
-    @PreAuthorize("@ss.hasPermi('system:class:add')")
+
     @Log(title = "班级信息", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody StuClass stuClass)
@@ -84,7 +84,7 @@ public class StuClassController extends BaseController
     /**
      * 修改班级信息
      */
-    @PreAuthorize("@ss.hasPermi('system:class:edit')")
+
     @Log(title = "班级信息", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody StuClass stuClass)
@@ -95,7 +95,7 @@ public class StuClassController extends BaseController
     /**
      * 删除班级信息
      */
-    @PreAuthorize("@ss.hasPermi('system:class:remove')")
+
     @Log(title = "班级信息", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)
