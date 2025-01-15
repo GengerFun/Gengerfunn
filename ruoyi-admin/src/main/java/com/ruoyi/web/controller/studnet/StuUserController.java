@@ -44,10 +44,35 @@ public class StuUserController extends BaseController
 
     @Autowired
     private IStuPaymentService stuPaymentService;
+
+
+    @GetMapping(value = "/upExitCollege/{userId}")
+    public AjaxResult upExitCollege(@PathVariable("userId") Long userId)
+    {
+        StuUser stuUser = new StuUser();
+        stuUser.setId(userId);
+        stuUser.setRegistrationStatus("2");
+        stuUserService.updateStuUser(stuUser);
+        return success("退学成功！");
+    }
+
+
     /**
      * 查询学生信息列表
      */
-//    @PreAuthorize("@ss.hasPermi('system:user:list')")
+    @PreAuthorize("@ss.hasPermi('system:user:list')")
+    @GetMapping("/listUser")
+    public TableDataInfo listUser(StuUser stuUser)
+    {
+        startPage();
+        List<StuUser> list = stuUserService.selectStuUserList(stuUser);
+        return getDataTable(list);
+    }
+
+
+    /**
+     * 查询学生信息列表
+     */
     @GetMapping("/list")
     public AjaxResult getAllMember()
     {
@@ -122,13 +147,13 @@ public class StuUserController extends BaseController
 return AjaxResult.success("未实名");
         }*/
         // 都已完成
-        if (stuUsers.size()!=0 && stuPayments.size() != 0){
+       /* if (stuUsers.size()!=0 && stuPayments.size() != 0){
             return AjaxResult.success("已缴费");
         }
 
         if (stuUsers.size()!=0 && stuPayments.size() == 0){
             return AjaxResult.success("已实名未缴费");
-        }
+        }*/
         return AjaxResult.success("未实名");
     }
 
@@ -137,9 +162,10 @@ return AjaxResult.success("未实名");
      */
 //    @PreAuthorize("@ss.hasPermi('system:user:edit')")
     @Log(title = "学生信息", businessType = BusinessType.UPDATE)
-    @PutMapping
+    @PutMapping(value = "/updateStudentUser")
     public AjaxResult edit(@RequestBody StuUser stuUser)
     {
+        System.out.println("进来了");
         return toAjax(stuUserService.updateStuUser(stuUser));
     }
 

@@ -7,10 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import cn.hutool.core.util.ObjectUtil;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.domain.model.LoginUser;
-import com.ruoyi.student.domain.StuMajor;
-import com.ruoyi.student.domain.StuMaterialPickup;
-import com.ruoyi.student.domain.StuPayment;
-import com.ruoyi.student.domain.StuPaytype;
+import com.ruoyi.student.domain.*;
 import com.ruoyi.student.domain.dto.StuUserDto;
 import com.ruoyi.student.domain.vo.PaymentVo;
 import com.ruoyi.student.domain.vo.StuUserPaymentVo;
@@ -58,6 +55,27 @@ public class StuPaymentController extends BaseController
 
     @Autowired
     private IStuPaytypeService stuPaytypeService;
+
+    @PreAuthorize("@ss.hasPermi('system:payment:list')")
+    @GetMapping("/getAllPayment")
+    public TableDataInfo getAllPayment(StuPayment stuPayment)
+    {
+        if (ObjectUtil.isNotEmpty(stuPayment.getTransactionId())){
+            StuUser stuUser = new StuUser();
+            stuUser.setStuName(stuPayment.getTransactionId());
+            List<StuUser> stuUsers = stuUserService.selectStuUserList(stuUser);
+            stuPayment.setStuId(stuUsers.get(0).getUserId());
+            stuPayment.setTransactionId(null);
+        }
+        startPage();
+        List<StuPayment> list = stuPaymentService.selectStuPaymentList(stuPayment);
+        list.stream().forEach(payment ->{
+            StuUserDto stuUserDto = stuUserService.selectStuUserById(payment.getStuId());
+            payment.setCreateBy(stuUserDto.getStuName());
+        });
+        return getDataTable(list);
+    }
+
     /**
      * 查询缴费记录列表
      */

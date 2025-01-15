@@ -25,6 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectStuDormitoryList" parameterType="StuDormitory" resultMap="StuDormitoryResult">
         <include refid="selectStuDormitoryVo"/>
         <where>
+            <if test="id != null  and id != ''"> and id = #{id}</if>
             <if test="building != null  and building != ''"> and building = #{building}</if>
             <if test="roomNumber != null  and roomNumber != ''"> and room_number = #{roomNumber}</if>
             <if test="bedCount != null  and bedCount != ''"> and bed_count = #{bedCount}</if>

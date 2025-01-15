@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.student.mapper.StuArchiveMapper">
+
+    <resultMap type="StuArchive" id="StuArchiveResult">
+        <result property="id"    column="id"    />
+        <result property="stuId"    column="stu_id"    />
+        <result property="archiveType"    column="archive_type"    />
+        <result property="archiveName"    column="archive_name"    />
+        <result property="archiveAdress"    column="archive_adress"    />
+        <result property="archivePerson"    column="archive_person"    />
+        <result property="archivePhone"    column="archive_phone"    />
+        <result property="hukouType"    column="hukou_type"    />
+        <result property="archiveCode"    column="archive_code"    />
+        <result property="hukouAdress"    column="hukou_adress"    />
+        <result property="agreement"    column="agreement"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectStuArchiveVo">
+        select id, stu_id, archive_type, archive_name, archive_adress, archive_person, archive_phone, hukou_type, archive_code, hukou_adress, agreement, del_flag, create_by, create_time, update_by, update_time from stu_archive
+    </sql>
+
+    <select id="selectStuArchiveList" parameterType="StuArchive" resultMap="StuArchiveResult">
+        <include refid="selectStuArchiveVo"/>
+        <where>
+            <if test="stuId != null "> and stu_id = #{stuId}</if>
+            <if test="archiveType != null  and archiveType != ''"> and archive_type = #{archiveType}</if>
+            <if test="archiveName != null  and archiveName != ''"> and archive_name like concat('%', #{archiveName}, '%')</if>
+            <if test="archiveAdress != null  and archiveAdress != ''"> and archive_adress = #{archiveAdress}</if>
+            <if test="archivePerson != null  and archivePerson != ''"> and archive_person = #{archivePerson}</if>
+            <if test="archivePhone != null  and archivePhone != ''"> and archive_phone = #{archivePhone}</if>
+            <if test="hukouType != null  and hukouType != ''"> and hukou_type = #{hukouType}</if>
+            <if test="archiveCode != null  and archiveCode != ''"> and archive_code = #{archiveCode}</if>
+            <if test="hukouAdress != null  and hukouAdress != ''"> and hukou_adress = #{hukouAdress}</if>
+            <if test="agreement != null  and agreement != ''"> and agreement = #{agreement}</if>
+        </where>
+    </select>
+
+    <select id="selectStuArchiveById" parameterType="Long" resultMap="StuArchiveResult">
+        <include refid="selectStuArchiveVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertStuArchive" parameterType="StuArchive" useGeneratedKeys="true" keyProperty="id">
+        insert into stu_archive
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="stuId != null">stu_id,</if>
+            <if test="archiveType != null">archive_type,</if>
+            <if test="archiveName != null">archive_name,</if>
+            <if test="archiveAdress != null">archive_adress,</if>
+            <if test="archivePerson != null">archive_person,</if>
+            <if test="archivePhone != null">archive_phone,</if>
+            <if test="hukouType != null">hukou_type,</if>
+            <if test="archiveCode != null">archive_code,</if>
+            <if test="hukouAdress != null">hukou_adress,</if>
+            <if test="agreement != null">agreement,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="stuId != null">#{stuId},</if>
+            <if test="archiveType != null">#{archiveType},</if>
+            <if test="archiveName != null">#{archiveName},</if>
+            <if test="archiveAdress != null">#{archiveAdress},</if>
+            <if test="archivePerson != null">#{archivePerson},</if>
+            <if test="archivePhone != null">#{archivePhone},</if>
+            <if test="hukouType != null">#{hukouType},</if>
+            <if test="archiveCode != null">#{archiveCode},</if>
+            <if test="hukouAdress != null">#{hukouAdress},</if>
+            <if test="agreement != null">#{agreement},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateStuArchive" parameterType="StuArchive">
+        update stu_archive
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="stuId != null">stu_id = #{stuId},</if>
+            <if test="archiveType != null">archive_type = #{archiveType},</if>
+            <if test="archiveName != null">archive_name = #{archiveName},</if>
+            <if test="archiveAdress != null">archive_adress = #{archiveAdress},</if>
+            <if test="archivePerson != null">archive_person = #{archivePerson},</if>
+            <if test="archivePhone != null">archive_phone = #{archivePhone},</if>
+            <if test="hukouType != null">hukou_type = #{hukouType},</if>
+            <if test="archiveCode != null">archive_code = #{archiveCode},</if>
+            <if test="hukouAdress != null">hukou_adress = #{hukouAdress},</if>
+            <if test="agreement != null">agreement = #{agreement},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteStuArchiveById" parameterType="Long">
+        delete from stu_archive where id = #{id}
+    </delete>
+
+    <delete id="deleteStuArchiveByIds" parameterType="String">
+        delete from stu_archive where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

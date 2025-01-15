@@ -1,17 +1,15 @@
 package com.ruoyi.web.controller.studnet;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import cn.hutool.core.util.ObjectUtil;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.domain.model.LoginUser;
-import com.ruoyi.student.domain.StuMajor;
-import com.ruoyi.student.domain.StuMaterial;
-import com.ruoyi.student.domain.StuMaterialPickup;
-import com.ruoyi.student.domain.StuPayment;
+import com.ruoyi.student.domain.*;
 import com.ruoyi.student.domain.dto.StuUserDto;
 import com.ruoyi.student.domain.vo.StuMaterialPickupVo;
 import com.ruoyi.student.domain.vo.StuUserMaterialVo;
@@ -57,6 +55,66 @@ public class StuMaterialPickupController extends BaseController
 
     @Autowired
     private IStuMaterialService stuMaterialService;
+
+
+
+    /**
+     * 新增物资领取记录
+     */
+    @PreAuthorize("@ss.hasPermi('system:pickup:UPDATE')")
+    @PostMapping("/upPickupStatus")
+    public AjaxResult upPickupStatus(@RequestBody List<Long> ids)
+    {
+        AtomicReference<Boolean> flag = new AtomicReference<>(false);
+        ids.stream().forEach(id ->{
+            StuMaterialPickup stuMaterialPickup = stuMaterialPickupService.selectStuMaterialPickupById(id);
+            if ("1".equals(stuMaterialPickup.getStatus())){
+                flag.set(true);
+            }else if ("0".equals(stuMaterialPickup.getStatus())){
+                if(ObjectUtil.isNotEmpty(stuMaterialPickup)){
+                    StuMaterialPickup stuMaterialPick = new StuMaterialPickup();
+                    stuMaterialPick.setStatus("1");
+                    stuMaterialPick.setId(id);
+                    stuMaterialPickupService.updateStuMaterialPickup(stuMaterialPick);
+                }
+            }
+        });
+        if (flag.get()){
+            return this.error("该学生有已领物资，请勿重复领取！");
+        }
+        return success("领取成功！");
+    }
+
+    /**
+     * 查询物资领取记录列表
+     */
+    @PreAuthorize("@ss.hasPermi('system:pickup:list')")
+    @GetMapping("/listPickup")
+    public TableDataInfo listPickup(StuMaterialPickup stuMaterialPickup)
+    {
+        if (ObjectUtil.isNotEmpty(stuMaterialPickup.getStatus())){
+            StuUser stuUser = new StuUser();
+            stuUser.setStuName(stuMaterialPickup.getStatus());
+            List<StuUser> stuUsers = stuUserService.selectStuUserList(stuUser);
+            stuMaterialPickup.setStuId(stuUsers.get(0).getUserId());
+            stuMaterialPickup.setStatus(null);
+        }
+
+
+        startPage();
+        List<StuMaterialPickup> list = stuMaterialPickupService.selectStuMaterialPickupList(stuMaterialPickup);
+
+        list.stream().forEach(payment ->{
+            StuMaterial stuMaterial = stuMaterialService.selectStuMaterialById(payment.getMaterialId());
+            StuUserDto stuUserDto = stuUserService.selectStuUserById(payment.getStuId());
+            payment.setCreateBy(stuUserDto.getStuName());
+            payment.setRemark(stuMaterial.getMaterialName());
+        });
+
+        return getDataTable(list);
+    }
+
+
     /**
      * 查询物资领取记录列表
      */

@@ -32,18 +32,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectStuUserVo">
-        select id, user_id, stu_name, job_type, id_student, id_number, major_id, class_id, dormitory_id, registration_status, email, phonenumber, sex, avatar, del_flag, create_by, create_time, update_by, update_time, remark from stu_user
+        select id, user_id, nation, stu_name, job_type, id_student, age, id_number, major_id, political_status, source_location, class_id, dormitory_id, registration_status, email, phonenumber, sex, avatar, del_flag, create_by, create_time, update_by, update_time, remark from stu_user
     </sql>
 
     <select id="selectStuUserList" parameterType="StuUser" resultMap="StuUserResult">
         <include refid="selectStuUserVo"/>
         <where>
             <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="nation != null  and nation != ''"> and nation = #{nation}</if>
             <if test="stuName != null  and stuName != ''"> and stu_name like concat('%', #{stuName}, '%')</if>
             <if test="jobType != null  and jobType != ''"> and job_type = #{jobType}</if>
             <if test="idStudent != null  and idStudent != ''"> and id_student = #{idStudent}</if>
             <if test="idNumber != null  and idNumber != ''"> and id_number = #{idNumber}</if>
             <if test="majorId != null "> and major_id = #{majorId}</if>
+            <if test="politicalStatus != null  and politicalStatus != ''"> and political_status = #{politicalStatus}</if>
+            <if test="sourceLocation != null  and sourceLocation != ''"> and source_location = #{sourceLocation}</if>
             <if test="classId != null "> and class_id = #{classId}</if>
             <if test="dormitoryId != null "> and dormitory_id = #{dormitoryId}</if>
             <if test="registrationStatus != null  and registrationStatus != ''"> and registration_status = #{registrationStatus}</if>
@@ -51,6 +54,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="phonenumber != null  and phonenumber != ''"> and phonenumber = #{phonenumber}</if>
             <if test="sex != null  and sex != ''"> and sex = #{sex}</if>
             <if test="avatar != null  and avatar != ''"> and avatar = #{avatar}</if>
+            <if test="age != null  and age != ''"> and age = #{age}</if>
         </where>
     </select>
 
@@ -125,7 +129,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="classId != null">class_id = #{classId},</if>
             <if test="dormitoryId != null">dormitory_id = #{dormitoryId},</if>
             <if test="registrationStatus != null">registration_status = #{registrationStatus},</if>
+
             <if test="email != null">email = #{email},</if>
+            <if test="politicalStatus != null">political_status = #{politicalStatus},</if>
             <if test="phonenumber != null">phonenumber = #{phonenumber},</if>
             <if test="sex != null">sex = #{sex},</if>
             <if test="avatar != null">avatar = #{avatar},</if>
@@ -135,6 +141,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateBy != null">update_by = #{updateBy},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
             <if test="remark != null">remark = #{remark},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="sourceLocation != null">source_location = #{sourceLocation},</if>
         </trim>
         where id = #{id}
     </update>

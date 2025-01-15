@@ -4,6 +4,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.student.domain.StuDormitory;
@@ -43,6 +44,22 @@ public class StuDormitoryController extends BaseController
 
     @Autowired
     private IStuUserService stuUserService;
+
+
+    /**
+     * 查询宿舍信息列表
+     */
+    @PreAuthorize("@ss.hasPermi('system:dormitory:list')")
+    @GetMapping("/listDormitory")
+    public TableDataInfo listDormitory(StuDormitory stuDormitory)
+    {
+        startPage();
+        List<StuDormitory> list = stuDormitoryService.selectStuDormitoryList(stuDormitory);
+        return getDataTable(list);
+    }
+
+
+
     /**
      * 查询宿舍信息列表
      */
@@ -100,11 +117,17 @@ public class StuDormitoryController extends BaseController
      */
 
     @Log(title = "宿舍信息", businessType = BusinessType.UPDATE)
-    @PutMapping
+    @PutMapping("/updatedDormitory")
     public AjaxResult edit(@RequestBody StuDormitory stuDormitory)
     {
+        if (ObjectUtil.isEmpty(stuDormitory.getId())){
+            return toAjax(stuDormitoryService.insertStuDormitory(stuDormitory));
+        }
+        System.out.println(stuDormitory);
         return toAjax(stuDormitoryService.updateStuDormitory(stuDormitory));
     }
+
+
 
     /**
      * 删除宿舍信息
